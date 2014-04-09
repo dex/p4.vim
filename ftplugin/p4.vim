@@ -17,11 +17,11 @@ nmap <buffer> <unique> <CR> <Plug>P4ChangeListEntry
 nmap <buffer> <unique> q :q<CR>
 
 noremap <buffer><unique><script> <Plug>P4ChangeListEntry <SID>ChangeListEntry
-noremap <buffer><unique> <SID>ChangeListEntry :!cl <C-R>=fnameescape(split(getline("."))[1])<CR><CR>
+noremap <buffer><unique> <SID>ChangeListEntry :silent !cl <C-R>=fnameescape(split(getline("."))[1])<CR><CR><C-L>
 
 nmap <buffer> <unique> <C-\> <Plug>P4ChangeList
 noremap <buffer> <unique> <script> <Plug>P4ChangeList <SID>ChangeList
-noremap <buffer> <SID>ChangeList :!cl <C-R>=fnameescape(expand("<cWORD>"))<CR><CR>
+noremap <buffer> <SID>ChangeList :silent !cl <C-R>=fnameescape(expand("<cWORD>"))<CR><CR><C-L>
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
