@@ -19,7 +19,7 @@ function! s:ChangeList(...)
     if a:0 == 1
 	let id = str2nr(a:1)
 	if id
-	    call s:P4DoCmd("p4 describe ".id, "p4-describe-".id)
+	    call s:P4DoCmd("p4 describe -du ".id, "p4-describe-".id, "diff")
 	elseif isdirectory(a:1)
 	    call s:P4DoCmd("p4 changes ".a:1."...", "p4-changelist")
 	else
@@ -30,7 +30,7 @@ function! s:ChangeList(...)
     endif
 endfunction
 
-function! s:P4DoCmd(cmd, name)
+function! s:P4DoCmd(cmd, name, ...)
     if bufexists(a:name)
 	echo "Buffer ".a:name." exists"
 	return
@@ -41,6 +41,10 @@ function! s:P4DoCmd(cmd, name)
     let output = system(a:cmd)
     0put=output|0
     silent noautocmd file `=a:name`
+
+    if a:0 > 0 && !empty(a:1)
+	let &ft.=".".a:1
+    endif
 endfunction
 
 if !exists(":CL")
