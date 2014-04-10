@@ -11,6 +11,10 @@ let g:loadded_p4 = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
+map <unique> <F4> <Plug>P4OpenCL
+noremap <unique> <script> <Plug>P4OpenCL <SID>OpenCL
+noremap <SID>OpenCL :CL<CR>
+
 function! s:ChangeList(...)
     if a:0 == 1
 	let id = str2nr(a:1)
