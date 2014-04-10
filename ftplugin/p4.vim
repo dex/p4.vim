@@ -17,16 +17,17 @@ nmap <buffer> <unique> <CR> <Plug>P4ChangeListEntry
 nmap <buffer> <unique> q :q<CR>
 
 noremap <buffer><unique><script> <Plug>P4ChangeListEntry <SID>ChangeListEntry
-noremap <buffer><unique> <SID>ChangeListEntry :call <SID>run_cl(fnameescape(split(getline("."))[1]))<CR>
+noremap <buffer><unique> <SID>ChangeListEntry :call <SID>RunCL(fnameescape(split(getline("."))[1]))<CR>
 
 nmap <buffer> <unique> <C-\> <Plug>P4ChangeList
 noremap <buffer> <unique> <script> <Plug>P4ChangeList <SID>ChangeList
-noremap <buffer> <SID>ChangeList :call <SID>run_cl(fnameescape(expand("<cWORD>")))<CR>
+noremap <buffer> <SID>ChangeList :call <SID>RunCL(fnameescape(expand("<cWORD>")))<CR>
 
-function! s:run_cl(obj)
-    execute "silent !cl ". a:obj
-    redraw!
-endfunction
+if !exists("*s:RunCL")
+    function! s:RunCL(obj)
+	execute "CL ". a:obj
+    endfunction
+endif
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
