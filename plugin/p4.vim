@@ -20,7 +20,7 @@ function! s:ChangeList(...)
 	let id = str2nr(a:1)
 	if id
 	    call s:P4DoCmd("p4 describe -du ".id, "p4-describe-".id, "diff")
-	elseif isdirectory(a:1)
+	elseif isdirectory(a:1) || strridx(a:1, '/') == strlen(a:1)-1
 	    call s:P4DoCmd("p4 changes ".a:1."...", "p4-changelist")
 	else
 	    call s:P4DoCmd("p4 filelog ".a:1, "p4-filelog-".a:1)
