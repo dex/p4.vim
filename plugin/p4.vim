@@ -17,7 +17,7 @@ function! s:ChangeList(...)
 	if id
 	    call s:P4DoCmd("p4 describe ".id, "p4-describe-".id)
 	elseif isdirectory(a:1)
-	    call s:P4DoCmd("p4 changes ".getcwd()."/...", "p4-changelist")
+	    call s:P4DoCmd("p4 changes ".a:1."...", "p4-changelist")
 	else
 	    call s:P4DoCmd("p4 filelog ".a:1, "p4-filelog-".a:1)
 	endif
@@ -32,14 +32,15 @@ function! s:P4DoCmd(cmd, name)
 	return
     endif
     " Open a split buffer to capture the output of command
-    split | enew | set buftype=nofile noswapfile filetype=p4 bh=wipe
+    split | enew
+    set buftype=nofile noswapfile filetype=p4 bufhidden=wipe
     let output = system(a:cmd)
     0put=output|0
     silent noautocmd file `=a:name`
 endfunction
 
 if !exists(":CL")
-	command -nargs=? CL :call s:ChangeList(<f-args>)
+	command -nargs=? -complete=dir CL :call s:ChangeList(<f-args>)
 endif
 
 let &cpo = s:save_cpo
