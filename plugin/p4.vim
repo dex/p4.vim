@@ -11,7 +11,9 @@ let g:loadded_p4 = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-map <unique> <F4> <Plug>P4OpenCL
+if !hasmapto('<Plug>P4OpenCL')
+    map <unique> <F4> <Plug>P4OpenCL
+endif
 noremap <unique> <script> <Plug>P4OpenCL <SID>OpenCL
 noremap <SID>OpenCL :CL<CR>
 
@@ -48,7 +50,7 @@ function! s:P4DoCmd(cmd, name, ...)
 endfunction
 
 if !exists(":CL")
-	command -nargs=? -complete=dir CL :call s:ChangeList(<f-args>)
+    command -nargs=? -complete=dir CL :call s:ChangeList(<f-args>)
 endif
 
 let &cpo = s:save_cpo
