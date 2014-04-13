@@ -3,10 +3,10 @@
 " Description: A test p4 plugin
 " Last Modified: April 09, 2014
 
-if exists('b:did_p4_vim') || &cp || version < 700
+if exists('b:did_ftplugin') || &cp || version < 700
     finish
 endif
-let b:did_p4_vim = 1
+let b:did_ftplugin = 1
 
 
 let s:save_cpo = &cpo
