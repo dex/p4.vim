@@ -40,10 +40,10 @@ function! s:P4DoCmd(cmd, name, ...)
     " Open a split buffer to capture the output of command
     split | enew
     set buftype=nofile noswapfile filetype=p4 bufhidden=wipe
-    setlocal nomodifiable
     let output = system(a:cmd)
     0put=output|0
     silent noautocmd file `=a:name`
+    setlocal nomodifiable
 
     if a:0 > 0 && !empty(a:1)
 	let &ft.=".".a:1
