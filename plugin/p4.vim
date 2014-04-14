@@ -43,7 +43,7 @@ function! s:P4DoCmd(cmd, name, ...)
     let output = system(a:cmd)
     0put=output|0
     silent noautocmd file `=a:name`
-    setlocal nomodifiable
+    setlocal nomodifiable nobuflisted
 
     if a:0 > 0 && !empty(a:1)
 	let &ft.=".".a:1
