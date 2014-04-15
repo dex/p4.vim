@@ -27,6 +27,14 @@ function! s:ChangeList(...)
 	else
 	    call s:P4DoCmd("p4 filelog ".a:1, "p4-filelog-".a:1)
 	endif
+    elseif a:0 == 2
+	if a:2 < 2
+	    echo "Invalid revision number"
+	    return
+	endif
+	let cur=a:1."#".a:2
+	let prev=a:1."#".(a:2-1)
+	call s:P4DoCmd("p4 diff2 -du ".prev." ".cur, "p4-diff2-".a:1, "diff")
     else
 	call s:P4DoCmd("p4 changes ".getcwd()."/...", "p4-changelist")
     endif
@@ -41,7 +49,7 @@ function! s:P4DoCmd(cmd, name, ...)
     split | enew
     set buftype=nofile noswapfile filetype=p4 bufhidden=wipe
     let output = system(a:cmd)
-    0put=output|0
+    0put=output|$delete|0
     silent noautocmd file `=a:name`
     setlocal nomodifiable nobuflisted
 
@@ -51,7 +59,7 @@ function! s:P4DoCmd(cmd, name, ...)
 endfunction
 
 if !exists(":CL")
-    command -nargs=? -complete=dir CL :call s:ChangeList(<f-args>)
+    command -nargs=* -complete=dir CL :call s:ChangeList(<f-args>)
 endif
 
 let &cpo = s:save_cpo
