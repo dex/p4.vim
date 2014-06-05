@@ -1,0 +1,38 @@
+# {{{1 cl
+_p4_path()
+{
+    root="//depot"
+
+    if [ -z "$1" ]; then
+	dir=$root
+    elif [ "${1%/}" = "$1" ]; then
+	dir=$(dirname $1)
+    else
+	dir=${1%/}
+    fi
+
+    if [ -z "$dir" ] || [ "$dir" = "." ] || [ "$dir" = "/" ]; then
+	dir=$root
+    fi
+
+    for d in $(p4 dirs $dir/* 2>/dev/null); do
+        echo $d/
+    done
+
+    for f in $(p4 files $dir/* 2>/dev/null| cut -d ' ' -f 1); do
+        echo $f
+    done
+}
+
+_cl()
+{
+    cur=${COMP_WORDS[COMP_CWORD]}
+    prev=${COMP_WORDS[COMP_CWORD-1]}
+    if [ $COMP_CWORD -eq 1 ]; then
+        COMPREPLY=( $( compgen -W "$(_p4_path $cur)" $cur ) )
+    fi
+}
+complete -o nospace -o default -F _cl cl
+# }}}
+
+# ex: ts=4 sw=4 et filetype=sh
