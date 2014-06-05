@@ -8,6 +8,11 @@ if exists('g:loadded_p4') || &cp || version < 700
 endif
 let g:loadded_p4 = 1
 
+" Global variables
+if !exists('g:P4UseTab')
+  let g:P4UseTab = 0
+endif
+
 let s:save_cpo = &cpo
 set cpo&vim
 
@@ -45,8 +50,13 @@ function! s:P4DoCmd(cmd, name, ...)
 	echo "Buffer ".a:name." exists"
 	return
     endif
-    " Open a split buffer to capture the output of command
-    split | enew
+    " Open a split buffer/tab to capture the output of command
+
+    if g:P4UseTab == 1
+	    tabe
+    else
+	    split | enew
+    endif
     set buftype=nofile noswapfile filetype=p4 bufhidden=wipe
     let output = system(a:cmd)
     0put=output|$delete|0

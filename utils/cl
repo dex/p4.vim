@@ -1,2 +1,2 @@
 #!/bin/bash
-exec vim "+CL ${1%#*}" +on
+exec vim "+CL ${1%#*}" "+silent tabonly" "+silent on"
